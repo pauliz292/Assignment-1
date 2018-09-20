@@ -1,10 +1,12 @@
 import random
 import time
-from operator import itemgetter
+from Math_Game_Players import Players
+from Math_Game_Leaderboard import LeaderBoard
+
 
 class Math_Game(object):
-	"""docstring for Math_Game"""
-	def Main(self):
+
+	def main(self):
 		self.__init__()
 
 	def __init__(self):
@@ -16,14 +18,14 @@ class Math_Game(object):
 		self.operation = random.randint(0,3)
 		self.firstNum = random.randint(1,99)
 		self.secondNum = random.randint(1,99)
-		self.starttime = 0
+		self.starttime = 0 
 		self.endtime = 0
 
-	def LogIn(self, username):
+	def log_in(self, username):
 		self.username = ''
 		self.username = input("Username: ")
 
-	def CheckAnswer(self, corrects, errors):
+	def check_answer(self, corrects, errors):
 		if(self.userAnswer == self.questionAnswer):
 			print("Your answer is CORRECT!")
 			self.corrects += 1
@@ -31,15 +33,15 @@ class Math_Game(object):
 			print("Your answer is WRONG!")
 			self.errors += 1
 
-	def RandomizeValues(self):
+	def randomize_values(self):
 		self.operation = random.randint(0,3)
 		self.firstNum = random.randint(1,99)
 		self.secondNum = random.randint(1,99)
 
-	def AnswerSheet(self, answer):
+	def answer_sheet(self, answer):
 		self.userAnswer = float(input("Answer: "))
 
-	def ShowResults(self):
+	def show_results(self):
 		self.result = str({
 			'Username:': self.username,
 			'Time:': self.endtime,
@@ -54,68 +56,65 @@ class Math_Game(object):
 		finally:
 			self.resultFile.close()
 
-	def GameLoop(self):
+	def game_loop(self):
 		while(self.corrects < 10 and self.errors < 10):
 			self.starttime = time.time()
-			self.RandomizeValues()
+			self.randomize_values()
 			#addition
 			if(self.operation == 0):
 				self.questionAnswer = self.firstNum + self.secondNum
 				print("What is {} {} {}?".format(self.firstNum, "+", self.secondNum))
-				self.AnswerSheet(self.userAnswer)
-				self.CheckAnswer(self.corrects, self.errors)
+				self.answer_sheet(self.userAnswer)
+				self.check_answer(self.corrects, self.errors)
 			#subtraction
 			elif(self.operation == 1):
 				if(self.firstNum > self.secondNum):
 					self.questionAnswer = self.firstNum - self.secondNum
 					print("What is {} {} {}?".format(self.firstNum, "-", self.secondNum))
-					self.AnswerSheet(self.userAnswer)
-					self.CheckAnswer(self.corrects, self.errors)
+					self.answer_sheet(self.userAnswer)
+					self.check_answer(self.corrects, self.errors)
 				else:
-					self.RandomizeValues()
+					self.randomize_values()
 			#multiplication
 			elif(self.operation == 2):
 				if(self.firstNum or self.secondNum != 1):
 					self.questionAnswer = self.firstNum * self.secondNum
 					print("What is {} {} {}?".format(self.firstNum, "x", self.secondNum))
-					self.AnswerSheet(self.userAnswer)
-					self.CheckAnswer(self.corrects, self.errors)
+					self.answer_sheet(self.userAnswer)
+					self.check_answer(self.corrects, self.errors)
 				else:
-					self.RandomizeValues()
+					self.randomize_values()
 			#division
 			elif(self.operation == 3):
 				if(self.firstNum or self.secondNum != 1 and self.firstNum < self.secondNum):
 					self.questionAnswer = self.firstNum / self.secondNum
 					print("What is {} {} {}?".format(self.firstNum, "/", self.secondNum))
-					self.AnswerSheet(self.userAnswer)
-					self.CheckAnswer(self.corrects, self.errors)
+					self.answer_sheet(self.userAnswer)
+					self.check_answer(self.corrects, self.errors)
 				else:
-					self.RandomizeValues()
+					self.randomize_values()
 		self.endtime = time.time() - self.starttime
-		self.EndGame()
+		self.end_game()
 
 	def math_game(self):
 		#Start game
 		#setup game
 		while(self.username):
-			self.LogIn('')
+			self.log_in('')
 			if(self.username != ''):
 				self.loginQuestion = input("Do you want to start game {} (y/n)?".format(self.username))
 				if(self.loginQuestion == "y"):
 					self.corrects = 0
 					self.errors = 0
-					self.GameLoop()
+					self.game_loop()
 				else:
-					self.EndGame()
+					self.end_game()
 			else:
-				self.EndGame()
+				self.end_game()
 
-	def EndGame(self):
+	def end_game(self):
 		print("Thanks for playing!")
 		self.ShowResults()
-
-
-
 
 
 
